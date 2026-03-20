@@ -27,15 +27,25 @@ Generate an RSS feed from your Telegram chats. You digital minimalism friend.
             - TG_API_HASH=REPLACE_ME
             - TG_PASSWORD=REPLACE_ME
             - BASE_URL=REPLACE_ME
+            - PROXY_URL=socks5://torproxy:9050
          ports:
             - 3042:3042
          volumes:
             - data:/data
+         depends_on:
+            - torproxy
+
+      torproxy:
+         image: dperson/torproxy:latest
+         container_name: torproxy
+         restart: always
+         logging:
+            options:
+               max-size: "10m"
+               max-file: "3"
 
    volumes:
-      data: null
-
-   networks: {}
+      data:
    ```
 3. Run `docker compose up`
 4. Go to `http://127.0.0.1:3042`
@@ -75,3 +85,4 @@ Available environment variables (\* marks required ones):
 - `INITIAL_FEED_SIZE` - number of messages we fetch for any new feed on the first run. Default value: 50.
 - `UPDATE_INTERVAL` - how often the app should fetch new messages from Telegram and regenerate RSS feeds (in seconds). Default: 3600.
 - `MAX_VIDEO_SIZE_MB` - the maximum allowed size (in megabytes) for video files to be downloaded from Telegram. Default value: 10.
+- `PROXY_URL` - proxy URL for Telegram connection (e.g., `socks5://torproxy:9050` for Tor). Optional.
