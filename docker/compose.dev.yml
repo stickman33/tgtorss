@@ -12,6 +12,17 @@ services:
       - 3042:3042
     volumes:
       - data:/data
+    depends_on:
+      - torproxy
+
+  torproxy:
+    image: dperson/torproxy:latest
+    container_name: tgtorss-torproxy
+    restart: always
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "3"
 
 volumes:
   data: null

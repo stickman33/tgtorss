@@ -1,10 +1,27 @@
 import os
 from pathlib import Path
+from urllib.parse import urlparse
 from platformdirs import user_data_dir
 
 api_id = int(os.environ.get("TG_API_ID"))
 api_hash = os.environ.get("TG_API_HASH")
 password = os.environ.get("TG_PASSWORD")
+
+# Proxy configuration: supports socks5://host:port, socks4://host:port, http://host:port
+_proxy_url = os.environ.get("PROXY_URL")
+proxy = None
+if _proxy_url:
+    import socks
+    _parsed = urlparse(_proxy_url)
+    _proxy_types = {
+        "socks5": socks.SOCKS5,
+        "socks4": socks.SOCKS4,
+        "http": socks.HTTP,
+    }
+    _proxy_type = _proxy_types.get(_parsed.scheme)
+    if _proxy_type is None:
+        raise ValueError(f"Unsupported proxy scheme: {_parsed.scheme}")
+    proxy = (_proxy_type, _parsed.hostname, _parsed.port)
 
 update_interval_seconds = int(os.environ.get("UPDATE_INTERVAL") or 3600)
 feed_size_limit = int(os.environ.get("FEED_SIZE") or 200)
