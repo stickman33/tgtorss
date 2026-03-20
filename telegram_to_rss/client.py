@@ -12,10 +12,12 @@ class TelegramToRssClient:
     _password: str | None = None
 
     def __init__(
-        self, session_path: str, api_id: int, api_hash: str, password: str | None = None
+        self, session_path: str, api_id: int, api_hash: str, password: str | None = None,
+        proxy: tuple | None = None,
     ):
         self._telethon = TelegramClient(
-            session=session_path, api_id=api_id, api_hash=api_hash
+            session=session_path, api_id=api_id, api_hash=api_hash,
+            proxy=proxy,
         )
         self._telethon.parse_mode = "html"
         self._password = password

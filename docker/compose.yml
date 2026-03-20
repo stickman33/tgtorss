@@ -1,4 +1,4 @@
-services:
+ services:
   telegram-to-rss:
     image: aigoncharov/telegram-to-rss:latest
     container_name: telegram-to-rss
@@ -8,10 +8,22 @@ services:
       - TG_API_HASH=REPLACE_ME
       - TG_PASSWORD=REPLACE_ME
       - BASE_URL=REPLACE_ME
+      # - PROXY_URL=socks5://torproxy:9050
     ports:
       - 3042:3042
     volumes:
       - data:/data
+    depends_on:
+      - torproxy
+
+  torproxy:
+    image: dperson/torproxy:latest
+    container_name: tgtorss-torproxy
+    restart: always
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "3"
 
 volumes:
   data: null

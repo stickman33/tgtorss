@@ -6,6 +6,7 @@ from telegram_to_rss.config import (
     api_id,
     session_path,
     password,
+    proxy,
     static_path,
     feed_size_limit,
     initial_feed_size,
@@ -33,7 +34,8 @@ logging.basicConfig(
 
 app = Quart(__name__, static_folder=static_path, static_url_path="/static")
 client = TelegramToRssClient(
-    session_path=session_path, api_id=api_id, api_hash=api_hash, password=password
+    session_path=session_path, api_id=api_id, api_hash=api_hash, password=password,
+    proxy=proxy,
 )
 telegram_poller = TelegramPoller(
     client=client,
