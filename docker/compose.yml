@@ -8,7 +8,7 @@
       - TG_API_HASH=REPLACE_ME
       - TG_PASSWORD=REPLACE_ME
       - BASE_URL=REPLACE_ME
-      # - PROXY_URL=socks5://torproxy:9050
+      - PROXY_URL=socks5://torproxy:9050
     ports:
       - 3042:3042
     volumes:
@@ -18,7 +18,7 @@
 
   torproxy:
     image: dperson/torproxy:latest
-    container_name: tgtorss-torproxy
+    container_name: torproxy
     restart: always
     logging:
       options:
